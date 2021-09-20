@@ -6,6 +6,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"net/http"
+	"net/http/pprof"
+	_ "net/http/pprof"
 )
 
 var IpSecConfigFile string
@@ -36,6 +38,7 @@ func Serve() {
              </body>
              </html>`))
 	})
+	http.Handle("/debug", pprof.Handler("ipsec"))
 	http.Handle("/metrics", promhttp.Handler())
 
 	log.Infoln("Listening on", WebListenAddress)
